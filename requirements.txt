@@ -8,7 +8,8 @@ h5py
 pillow
 scikit-image
 lxml
-tensorflow>=2.0.0
+tensorflow==2.2.0
+keras>=2.3.1,<2.4.0
 opencv-python
-gast==0.2.2
 setuptools>=41.0.0
+git+https://github.com/fizyr/keras-retinanet@7dd7b90994676332380a1536ba57cf4253ec6492
