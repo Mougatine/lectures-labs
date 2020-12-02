@@ -1,3 +1,5 @@
+import collections
+
 from tensorflow.keras.losses import SparseCategoricalCrossentropy, BinaryCrossentropy
 from tensorflow.keras.metrics import Mean, Accuracy
 
@@ -10,17 +12,17 @@ bce = BinaryCrossentropy()
 model.compile(
     optimizer=optimizer,
     loss=[cce, bce],
-    metrics=["accuracy", "accuracy"]
+    metrics=["accuracy"]
 )
 
 def train_epoch(source_train_generator, target_train_generator):
     global lambda_factor, global_step
 
     # Keras provide helpful classes to monitor various metrics:
-    epoch_source_digits = tf.keras.metrics.Mean()
-    epoch_source_domains = tf.keras.metrics.Mean()
-    epoch_target_domains = tf.keras.metrics.Mean()
-    epoch_accuracy = tf.keras.metrics.SparseCategoricalAccuracy()
+    epoch_source_digits = tf.keras.metrics.Mean(name="source_digits_loss")
+    epoch_source_domains = tf.keras.metrics.Mean(name="source_domain_loss")
+    epoch_target_domains = tf.keras.metrics.Mean(name="target_domain_loss")
+    epoch_accuracy = tf.keras.metrics.SparseCategoricalAccuracy("source_digits_accuracy")
 
     # Fetch all trainable variables but those used uniquely for the digits classification:
     variables_but_classifier = list(filter(lambda x: "digits" not in x.name, model.trainable_variables))
